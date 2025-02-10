@@ -1,24 +1,61 @@
 //
+import RxCocoa
 import RxSwift
 
 var disposeBag: DisposeBag = .init()
 
 example(of: "Observable") {
     example(of: "Cold Observable", level: .one) {
-        let just = Observable.just(1)
-        let of = Observable.of(1, 2, 3)
-        let from = Observable.from([4, 5])
-        
-        _ = just.subscribe { event in
-            print("Just:", event)
+        example(of: "Just/ Of/ From", level: .two) {
+            let just = Observable.just(1)
+            let of = Observable.of(1, 2, 3)
+            let from = Observable.from([4, 5])
+            
+            _ = just.subscribe { event in
+                print("Just:", event)
+            }
+            
+            _ = of.subscribe { event in
+                print("Of:", event)
+            }
+            
+            _ = from.subscribe { event in
+                print("From:", event)
+            }
         }
         
-        _ = of.subscribe { event in
-            print("Of:", event)
+        example(of: "Map doesn't share stream ❌", level: .three) {
+            let observable = Observable<String>.create { observer in
+                print("At the beginning of the stream 😅")
+                observer.on(.next("Hello"))
+                return Disposables.create()
+            }
+            
+            let doubleMappedObservable = observable.map { $0 + $0 }
+            let tripleMappedObservable = observable.map { $0 + $0 + $0}
+            
+            doubleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
+            tripleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
         }
-        
-        _ = from.subscribe { event in
-            print("From:", event)
+    }
+    
+    example(of: "Hot Observable", level: .one) {
+        example(of: "Driver", level: .two) {
+            example(of: "Map to Driver shares stream ✅", level: .three) {
+                let driver = Observable<String>
+                    .create { observer in
+                        print("At the beginning of the stream 😄")
+                        observer.on(.next("Hello"))
+                        return Disposables.create()
+                    }
+                    .asDriver(onErrorJustReturn: "")
+                
+                let doubleMappedDriver = driver.map { $0 + $0 }
+                let tripleMappedDriver = driver.map { $0 + $0 + $0}
+                
+                doubleMappedDriver.drive(onNext: { str in print(str) }).disposed(by: disposeBag)
+                tripleMappedDriver.drive(onNext: { str in print(str) }).disposed(by: disposeBag)
+            }
         }
     }
 }
