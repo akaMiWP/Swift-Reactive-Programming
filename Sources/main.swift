@@ -18,3 +18,23 @@ example(of: "Cold Observable") {
         print(">> From:", event)
     }
 }
+
+example(of: "Operator - startsWith") {
+    
+    subExample(of: "doesn't call startWith") {
+        let subject = PublishSubject<Void>()
+        
+        _ = subject.subscribe(onNext: {
+            print(">> onNext")
+        })
+    }
+    
+    subExample(of: "call startWith") {
+        let subject = PublishSubject<Void>()
+            .startWith(())
+        
+        _ = subject.subscribe(onNext: {
+            print(">> onNext")
+        })
+    }
+}
