@@ -3,27 +3,29 @@ import RxSwift
 
 var disposeBag: DisposeBag = .init()
 
-example(of: "Cold Observable") {
-    let just = Observable.just(1)
-    let of = Observable.of(1, 2, 3)
-    let from = Observable.from([4, 5])
-    
-    _ = just.subscribe { event in
-        print("Just:", event)
-    }
-    
-    _ = of.subscribe { event in
-        print("Of:", event)
-    }
-    
-    _ = from.subscribe { event in
-        print("From:", event)
+example(of: "Observable") {
+    example(of: "Cold Observable", level: .one) {
+        let just = Observable.just(1)
+        let of = Observable.of(1, 2, 3)
+        let from = Observable.from([4, 5])
+        
+        _ = just.subscribe { event in
+            print("Just:", event)
+        }
+        
+        _ = of.subscribe { event in
+            print("Of:", event)
+        }
+        
+        _ = from.subscribe { event in
+            print("From:", event)
+        }
     }
 }
 
 example(of: "Operator - startsWith") {
     
-    subExample(of: "doesn't call startWith") {
+    example(of: "doesn't call startWith", level: .one) {
         let subject = PublishSubject<Void>()
         
         subject.subscribe(onNext: {
@@ -32,7 +34,7 @@ example(of: "Operator - startsWith") {
         .disposed(by: disposeBag)
     }
     
-    subExample(of: "call startWith") {
+    example(of: "call startWith", level: .one) {
         let subject = PublishSubject<Void>()
             .startWith(())
         
