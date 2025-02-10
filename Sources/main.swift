@@ -1,6 +1,8 @@
 //
 import RxSwift
 
+var disposeBag: DisposeBag = .init()
+
 example(of: "Cold Observable") {
     let just = Observable.just(1)
     let of = Observable.of(1, 2, 3)
@@ -24,17 +26,19 @@ example(of: "Operator - startsWith") {
     subExample(of: "doesn't call startWith") {
         let subject = PublishSubject<Void>()
         
-        _ = subject.subscribe(onNext: {
+        subject.subscribe(onNext: {
             print(">> onNext")
         })
+        .disposed(by: disposeBag)
     }
     
     subExample(of: "call startWith") {
         let subject = PublishSubject<Void>()
             .startWith(())
         
-        _ = subject.subscribe(onNext: {
+        subject.subscribe(onNext: {
             print(">> onNext")
         })
+        .disposed(by: disposeBag)
     }
 }
