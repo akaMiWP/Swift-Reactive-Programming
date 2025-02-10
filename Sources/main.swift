@@ -9,15 +9,15 @@ example(of: "Cold Observable") {
     let from = Observable.from([4, 5])
     
     _ = just.subscribe { event in
-        print(">> Just:", event)
+        print("Just:", event)
     }
     
     _ = of.subscribe { event in
-        print(">> Of:", event)
+        print("Of:", event)
     }
     
     _ = from.subscribe { event in
-        print(">> From:", event)
+        print("From:", event)
     }
 }
 
@@ -27,7 +27,7 @@ example(of: "Operator - startsWith") {
         let subject = PublishSubject<Void>()
         
         subject.subscribe(onNext: {
-            print(">> onNext")
+            print("onNext")
         })
         .disposed(by: disposeBag)
     }
@@ -37,7 +37,7 @@ example(of: "Operator - startsWith") {
             .startWith(())
         
         subject.subscribe(onNext: {
-            print(">> onNext")
+            print("onNext")
         })
         .disposed(by: disposeBag)
     }
