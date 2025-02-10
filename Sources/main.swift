@@ -24,7 +24,7 @@ example(of: "Observable") {
             }
         }
         
-        example(of: "Map doesn't share stream ❌", level: .three) {
+        example(of: "Observable - don't share stream ❌", level: .three) {
             let observable = Observable<String>.create { observer in
                 print("At the beginning of the stream 😅")
                 observer.on(.next("Hello"))
@@ -41,7 +41,7 @@ example(of: "Observable") {
     
     example(of: "Hot Observable", level: .one) {
         example(of: "Driver", level: .two) {
-            example(of: "Map to Driver shares stream ✅", level: .three) {
+            example(of: "Map to Driver - share stream ✅", level: .three) {
                 let driver = Observable<String>
                     .create { observer in
                         print("At the beginning of the stream 😄")
@@ -55,6 +55,23 @@ example(of: "Observable") {
                 
                 doubleMappedDriver.drive(onNext: { str in print(str) }).disposed(by: disposeBag)
                 tripleMappedDriver.drive(onNext: { str in print(str) }).disposed(by: disposeBag)
+            }
+            
+            example(of: "Map to Driver, Map back to Map - share stream ✅", level: .three) {
+                let observable = Observable<String>
+                    .create { observer in
+                        print("At the beginning of the stream 😄")
+                        observer.on(.next("Hello"))
+                        return Disposables.create()
+                    }
+                    .asDriver(onErrorJustReturn: "")
+                    .asObservable()
+                
+                let doubleMappedObservable = observable.map { $0 + $0 }
+                let tripleMappedObservable = observable.map { $0 + $0 + $0}
+                
+                doubleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
+                tripleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
             }
         }
     }
