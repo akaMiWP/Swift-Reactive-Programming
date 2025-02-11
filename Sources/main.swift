@@ -1,4 +1,5 @@
 //
+import Foundation
 import RxCocoa
 import RxSwift
 
@@ -72,6 +73,20 @@ example(of: "Observable") {
                 
                 doubleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
                 tripleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
+            }
+        }
+        
+        example(of: "Signal", level: .two) {
+            let signal = Observable<String>
+                .just("Hello")
+                .asSignal(onErrorJustReturn: "")
+            
+            signal.emit(onNext: { str in print(str) }).disposed(by: disposeBag)
+            
+            example(of: "Delay subscription - don't receive the latest event ❌", level: .three) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    signal.emit(onNext: { str in print(str) }).disposed(by: disposeBag)
+                }
             }
         }
     }

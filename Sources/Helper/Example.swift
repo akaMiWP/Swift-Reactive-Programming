@@ -6,11 +6,11 @@ public enum Level {
     
     var prefix: String {
         switch self {
-        case .root: "\n--- Example of:"
-        case .one: ">> Sub Example of:"
-        case .two: ">>>> Sub Example of:"
-        case .three: ">>>>>> Sub Example of:"
-        case .four: ">>>>>>>> Sub Example of:"
+        case .root: "\n\n--- Example of:"
+        case .one: "\n>> Sub Example:"
+        case .two: ">>>> Sub Example:"
+        case .three: ">>>>>> Sub Example"
+        case .four: ">>>>>>>> Sub Example"
         }
     }
 }
