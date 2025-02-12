@@ -38,6 +38,21 @@ example(of: "Observable") {
             doubleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
             tripleMappedObservable.subscribe(onNext: { str in print(str) }).disposed(by: disposeBag)
         }
+        
+        example(of: "create", level: .three) {
+            let observable = Observable<Int>.create { observer in
+                observer.on(.next(1))
+                return Disposables.create()
+            }
+            
+            observable.subscribe({ event in
+                switch event {
+                case .next(let number): print(number)
+                case .error, .completed: return
+                }
+            })
+            .disposed(by: disposeBag)
+        }
     }
     
     example(of: "Hot Observable", level: .one) {

@@ -9,8 +9,8 @@ public enum Level {
         case .root: "\n\n--- Example of:"
         case .one: "\n>> Sub Example:"
         case .two: ">>>> Sub Example:"
-        case .three: ">>>>>> Sub Example"
-        case .four: ">>>>>>>> Sub Example"
+        case .three: ">>>>>> Sub Example:"
+        case .four: ">>>>>>>> Sub Example:"
         }
     }
 }
