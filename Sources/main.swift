@@ -25,6 +25,14 @@ example(of: "Observable") {
             }
         }
         
+        example(of: "Empty", level: .two) {
+            let observable = Observable<Int>.empty()
+            observable.subscribe { value in
+                print(value)
+            }
+            .disposed(by: disposeBag)
+        }
+        
         example(of: "Observable - don't share stream ❌", level: .three) {
             let observable = Observable<String>.create { observer in
                 print("At the beginning of the stream 😅")
