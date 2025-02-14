@@ -112,6 +112,14 @@ example(of: "Observable") {
                 }
             }
         }
+        
+        example(of: "PublishSubject", level: .two) {
+            example(of: "with handleEvents", level: .three) {
+                let subject: PublishSubject<Int> = .init()
+                subject.subscribe { print($0) }.disposed(by: disposeBag)
+                subject.on(.next(1))
+            }
+        }
     }
 }
 
