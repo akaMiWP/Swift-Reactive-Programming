@@ -114,10 +114,16 @@ example(of: "Observable") {
         }
         
         example(of: "PublishSubject", level: .two) {
-            example(of: "with handleEvents", level: .three) {
+            example(of: "do", level: .three) {
                 let subject: PublishSubject<Int> = .init()
-                subject.subscribe { print($0) }.disposed(by: disposeBag)
+                subject.do { number in
+                    print("Side effect -> onNext:", number)
+                }
+                .subscribe()
+                .disposed(by: disposeBag)
+                
                 subject.on(.next(1))
+                subject.on(.next(2))
             }
         }
     }
